@@ -11,6 +11,13 @@
                 url: '/posts/create',
                 data: newPostForm.serialize(),
                 success: function (data) {
+                    new Noty({
+                        theme:'relax',
+                        text: "Post Published",
+                        type:"success",
+                        layout:'topRight',
+                        timeout:1500,
+                    }).show()
                     let newPost = newPostDom(data.data.post);
                     $('#posts-list-container>ul').prepend(newPost);
                     deletePost($(' .delete-post-button', newPost));
@@ -62,6 +69,14 @@
                 type:'get',
                 url: $(deleteLink).prop('href'),
                 success: function (data) {
+                    new Noty({
+                        theme:'relax',
+                        text: "Post Deleted",
+                        type:"success",
+                        layout:'topRight',
+                        timeout:1500,
+                    }).show()
+                    $.flash('success','Post Deleted');
                     $(`#post-${data.data.post_id}`).remove();
                 },
                 error: function (error) {

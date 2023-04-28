@@ -44,7 +44,7 @@ module.exports.destroy = async function (req, res) {
                     data: {
                         post_id:req.params.id
                     },
-                    message:"post delete"
+                    message:"post deleted"
                 })
             }
             req.flash('success','Post Deleted');
