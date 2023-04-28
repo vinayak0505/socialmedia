@@ -12,11 +12,11 @@
                 data: newPostForm.serialize(),
                 success: function (data) {
                     new Noty({
-                        theme:'relax',
+                        theme: 'relax',
                         text: "Post Published",
-                        type:"success",
-                        layout:'topRight',
-                        timeout:1500,
+                        type: "success",
+                        layout: 'topRight',
+                        timeout: 1500,
                     }).show()
                     let newPost = newPostDom(data.data.post);
                     $('#posts-list-container>ul').prepend(newPost);
@@ -66,17 +66,18 @@
         $(deleteLink).click(function (e) {
             e.preventDefault();
             $.ajax({
-                type:'get',
+                type: 'get',
                 url: $(deleteLink).prop('href'),
                 success: function (data) {
                     new Noty({
-                        theme:'relax',
+                        theme: 'relax',
                         text: "Post Deleted",
-                        type:"success",
-                        layout:'topRight',
-                        timeout:1500,
+                        type: "success",
+                        layout: 'topRight',
+                        timeout: 1500,
                     }).show()
-                    $.flash('success','Post Deleted');
+                    console.log("---------");
+                    console.log(data.data);
                     $(`#post-${data.data.post_id}`).remove();
                 },
                 error: function (error) {
@@ -86,5 +87,11 @@
         })
     }
 
+    function addDeleteToAll() {
+        $(' .delete-post-button', '#posts-list-container>ul>li').map(function () {
+            deletePost(this);
+        });
+    }
     createPost();
+    addDeleteToAll();
 }
