@@ -37,9 +37,7 @@ module.exports.destroy = async function (req, res) {
         // .id means converting the object id into string
         if (post.user == req.user.id) {
             post.remove();
-            var deleted = await Comment.deleteMany({ post: req.params.id });
-            console.log("deleted");
-            console.log(deleted);
+            await Comment.deleteMany({ post: req.params.id });
             if(req.xhr){
                 return res.status(200).json({
                     data: {

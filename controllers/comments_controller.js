@@ -2,7 +2,10 @@ const Comment = require('../models/comment');
 const Post = require('../models/post');
 
 module.exports.create = function (req, res) {
+    console.log("post");
+
     Post.findById(req.body.post, function (err, post) {
+        console.log("post");
 
         if (post) {
             Comment.create({
@@ -11,10 +14,17 @@ module.exports.create = function (req, res) {
                 user: req.user._id
             }, function (err, comment) {
                 // handle error
-
                 post.comments.push(comment);
                 post.save();
-
+                comment.user = req.user;
+                if (req.xhr) {
+                    return res.status(200).json({
+                        data: {
+                            comment: comment
+                        },
+                        message: 'Comment Created!'
+                    });
+                }
                 res.redirect('/');
             });
         }
