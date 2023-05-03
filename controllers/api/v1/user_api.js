@@ -9,11 +9,11 @@ module.exports.createSession = async function (req, res) {
                 message: "Invalid username or password"
             });
         }
-        
+
         return res.json(200, {
             message: "Sign in Successfull",
             data: {
-                token: jwt.sign(user.toJSON(), 'codeial', { expiresIn: '10000' })
+                token: jwt.sign(user.toJSON(), 'codeial', { expiresIn: '100000' })
             }
         })
     } catch (error) {
