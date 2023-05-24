@@ -15,7 +15,7 @@ gulp.task('css', (done) => {
         .pipe(cssnano())
         .pipe(gulp.dest('./assets.css'));
     console.log('Minified CSS');
-    return gulp.src('./assets/**/*.css')
+    gulp.src('./assets/**/*.css')
         .pipe(rev())
         .pipe(gulp.dest('./public/assets'))
         .pipe(rev.manifest({
@@ -23,4 +23,5 @@ gulp.task('css', (done) => {
             merge: true
         }))
         .pipe(gulp.dest('./public/assets'));
+    done();
 })
