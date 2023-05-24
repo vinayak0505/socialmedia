@@ -1,9 +1,11 @@
 const express = require('express');
 const env = require('./config/environment');
-const morgan = require('morgan');
+const logger = require('morgan');
+
+
 const cookieParser = require('cookie-parser');
 const app = express();
-require('./config/view-helper')(app);
+require('./config/view-helpers')(app);
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
@@ -12,6 +14,8 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const passportJWT = require('./config/passport-jwt-strategy');
+const passportGoogle = require('./config/passport-google-oauth2-strategy');
+
 const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
@@ -24,7 +28,7 @@ chatServer.listen(5000);
 console.log('chat server is listening on port 5000');
 const path = require('path');
 
-if(env.name == 'development'){
+if (env.name == 'development'){
     app.use(sassMiddleware({
         src: path.join(__dirname, env.asset_path, 'scss'),
         dest: path.join(__dirname, env.asset_path, 'css'),
@@ -33,6 +37,7 @@ if(env.name == 'development'){
         prefix: '/css'
     }));
 }
+
 app.use(express.urlencoded());
 
 app.use(cookieParser());
@@ -41,7 +46,7 @@ app.use(express.static(env.asset_path));
 // make the uploads path available to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-app.use(morgan(env.morgan.mode, env.morgan.options));
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 app.use(expressLayouts);
 // extract style and scripts from sub pages into the layout
@@ -69,10 +74,10 @@ app.use(session({
         {
             mongooseConnection: db,
             autoRemove: 'disabled'
-
+        
         },
-        function (err) {
-            console.log(err || 'connect-mongodb setup ok');
+        function(err){
+            console.log(err ||  'connect-mongodb setup ok');
         }
     )
 }));
@@ -89,8 +94,8 @@ app.use(customMware.setFlash);
 app.use('/', require('./routes'));
 
 
-app.listen(port, function (err) {
-    if (err) {
+app.listen(port, function(err){
+    if (err){
         console.log(`Error in running the server: ${err}`);
     }
 
